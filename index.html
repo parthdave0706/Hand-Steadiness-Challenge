@@ -1,0 +1,895 @@
+```html
+<div id="tsw-handsteadiness-widget">
+
+<style>
+#tsw-handsteadiness-widget,
+#tsw-handsteadiness-widget *{
+  box-sizing:border-box;
+}
+
+#tsw-handsteadiness-widget{
+  font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  background:#fff;
+  color:#1a1a1a;
+  padding:24px 16px 48px;
+  max-width:680px;
+  margin:0 auto;
+  position:relative;
+  overflow:hidden;
+}
+
+#tsw-handsteadiness-widget .tsw-center{
+  text-align:center;
+}
+
+#tsw-handsteadiness-widget .tsw-title{
+  font-size:22px;
+  font-weight:500;
+  margin-bottom:8px;
+  line-height:1.4;
+}
+
+#tsw-handsteadiness-widget .tsw-sub{
+  font-size:15px;
+  color:#666;
+  line-height:1.6;
+  margin-bottom:1.5rem;
+}
+
+#tsw-handsteadiness-widget .tsw-diff-row{
+  display:flex;
+  gap:8px;
+  justify-content:center;
+  margin-bottom:1.5rem;
+  flex-wrap:wrap;
+}
+
+#tsw-handsteadiness-widget .tsw-diff-btn{
+  padding:6px 16px;
+  font-size:13px;
+  border-radius:20px;
+  border:1px solid #ddd;
+  background:transparent;
+  color:#666;
+  cursor:pointer;
+  font-family:inherit;
+  transition:all .12s ease;
+}
+
+#tsw-handsteadiness-widget .tsw-diff-btn.tsw-selected{
+  background:#E6F1FB;
+  border-color:#378ADD;
+  color:#0C447C;
+}
+
+#tsw-handsteadiness-widget .tsw-btn-row{
+  display:flex;
+  gap:10px;
+  justify-content:center;
+  flex-wrap:wrap;
+  margin-top:1rem;
+}
+
+#tsw-handsteadiness-widget button{
+  cursor:pointer;
+  font-family:inherit;
+  font-size:14px;
+  padding:8px 20px;
+  border-radius:8px;
+  border:1px solid #ccc;
+  background:transparent;
+  color:#1a1a1a;
+  transition:background .12s ease;
+}
+
+#tsw-handsteadiness-widget button:hover{
+  background:#f5f5f5;
+}
+
+#tsw-handsteadiness-widget .tsw-primary{
+  background:#185FA5;
+  color:#E6F1FB;
+  border-color:#185FA5;
+}
+
+#tsw-handsteadiness-widget .tsw-primary:hover{
+  background:#0C447C;
+  border-color:#0C447C;
+}
+
+#tsw-handsteadiness-widget .tsw-screen{
+  display:none;
+}
+
+#tsw-handsteadiness-widget .tsw-screen.tsw-active{
+  display:block;
+}
+
+#tsw-handsteadiness-widget .tsw-hud{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:10px;
+  padding:0 2px;
+  gap:10px;
+}
+
+#tsw-handsteadiness-widget .tsw-hud-item{
+  font-size:13px;
+  color:#666;
+  text-align:center;
+  flex:1;
+}
+
+#tsw-handsteadiness-widget .tsw-hud-val{
+  font-size:16px;
+  font-weight:500;
+  color:#1a1a1a;
+}
+
+#tsw-handsteadiness-widget .tsw-progress-wrap{
+  height:6px;
+  background:#f0f0f0;
+  border-radius:3px;
+  margin-bottom:12px;
+  overflow:hidden;
+}
+
+#tsw-handsteadiness-widget .tsw-progress-bar{
+  height:100%;
+  width:0%;
+  border-radius:3px;
+  background:#185FA5;
+  transition:width .1s linear;
+}
+
+#tsw-handsteadiness-widget canvas{
+  display:block;
+  width:100%;
+  max-width:100%;
+  height:auto;
+  margin:0 auto;
+  border-radius:8px;
+  border:1px solid #e0e0e0;
+  touch-action:none;
+  background:#fff;
+}
+
+#tsw-handsteadiness-widget .tsw-touch-hint{
+  font-size:12px;
+  color:#aaa;
+  text-align:center;
+  margin-top:8px;
+  line-height:1.5;
+}
+
+#tsw-handsteadiness-widget .tsw-stat-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:10px;
+  margin:1.5rem 0;
+}
+
+#tsw-handsteadiness-widget .tsw-stat{
+  background:#f7f7f7;
+  border-radius:8px;
+  padding:1rem;
+  text-align:center;
+}
+
+#tsw-handsteadiness-widget .tsw-stat-label{
+  font-size:12px;
+  color:#888;
+  margin-bottom:4px;
+}
+
+#tsw-handsteadiness-widget .tsw-stat-val{
+  font-size:24px;
+  font-weight:500;
+  color:#1a1a1a;
+}
+
+#tsw-handsteadiness-widget .tsw-grade-badge{
+  display:inline-block;
+  font-size:28px;
+  font-weight:500;
+  padding:10px 24px;
+  border-radius:12px;
+  margin-bottom:12px;
+}
+
+#tsw-handsteadiness-widget .tsw-verdict{
+  font-size:15px;
+  color:#555;
+  margin-bottom:1.5rem;
+  line-height:1.6;
+}
+
+@media(max-width:640px){
+
+  #tsw-handsteadiness-widget{
+    padding:20px 12px 40px;
+  }
+
+  #tsw-handsteadiness-widget .tsw-title{
+    font-size:20px;
+  }
+
+  #tsw-handsteadiness-widget .tsw-hud{
+    gap:6px;
+  }
+
+  #tsw-handsteadiness-widget .tsw-hud-item{
+    font-size:12px;
+  }
+
+  #tsw-handsteadiness-widget .tsw-hud-val{
+    display:block;
+    font-size:15px;
+    margin-top:2px;
+  }
+
+  #tsw-handsteadiness-widget .tsw-stat-grid{
+    grid-template-columns:1fr;
+  }
+
+  #tsw-handsteadiness-widget .tsw-stat-val{
+    font-size:22px;
+  }
+}
+</style>
+
+<!-- INTRO SCREEN -->
+<div class="tsw-screen tsw-active tsw-center" id="tsw-screen-intro">
+  <p class="tsw-title">Hand Steadiness Challenge</p>
+
+  <p class="tsw-sub">
+    Guide your cursor through the maze without touching the walls.<br>
+    3 mistakes and it's over. How far can you get?
+  </p>
+
+  <div class="tsw-diff-row">
+    <button class="tsw-diff-btn tsw-selected" data-diff="easy">Easy</button>
+    <button class="tsw-diff-btn" data-diff="medium">Medium</button>
+    <button class="tsw-diff-btn" data-diff="hard">Hard • Surgeon Mode</button>
+  </div>
+
+  <div class="tsw-btn-row">
+    <button class="tsw-primary" id="tsw-btn-start">▶ Start</button>
+  </div>
+</div>
+
+<!-- GAME SCREEN -->
+<div class="tsw-screen" id="tsw-screen-game">
+
+  <div class="tsw-hud">
+    <div class="tsw-hud-item">
+      Time
+      <span class="tsw-hud-val" id="tsw-hud-time">0.0s</span>
+    </div>
+
+    <div class="tsw-hud-item">
+      Progress
+      <span class="tsw-hud-val" id="tsw-hud-progress">0%</span>
+    </div>
+
+    <div class="tsw-hud-item">
+      Mistakes
+      <span class="tsw-hud-val" id="tsw-hud-errors">0</span>
+    </div>
+  </div>
+
+  <div class="tsw-progress-wrap">
+    <div class="tsw-progress-bar" id="tsw-progress-bar"></div>
+  </div>
+
+  <canvas
+    id="tsw-maze-canvas"
+    width="640"
+    height="280"
+  ></canvas>
+
+  <p class="tsw-touch-hint">
+    Move slowly — any wall contact counts as a mistake (max 3)
+  </p>
+</div>
+
+<!-- RESULT SCREEN -->
+<div class="tsw-screen tsw-center" id="tsw-screen-result">
+
+  <div class="tsw-grade-badge" id="tsw-grade-badge"></div>
+
+  <p class="tsw-title" id="tsw-result-title"></p>
+
+  <p class="tsw-verdict" id="tsw-result-verdict"></p>
+
+  <div class="tsw-stat-grid">
+
+    <div class="tsw-stat">
+      <div class="tsw-stat-label">Time</div>
+      <div class="tsw-stat-val" id="tsw-result-time">—</div>
+    </div>
+
+    <div class="tsw-stat">
+      <div class="tsw-stat-label">Mistakes</div>
+      <div class="tsw-stat-val" id="tsw-result-errors">—</div>
+    </div>
+
+    <div class="tsw-stat">
+      <div class="tsw-stat-label">Score</div>
+      <div class="tsw-stat-val" id="tsw-result-score">—</div>
+    </div>
+
+  </div>
+
+  <div class="tsw-btn-row">
+    <button id="tsw-btn-share">↗ Copy Result</button>
+    <button class="tsw-primary" id="tsw-btn-retry">↻ Try Again</button>
+  </div>
+
+</div>
+
+<script>
+(function(){
+
+  const widget = document.getElementById('tsw-handsteadiness-widget');
+
+  const W = 640;
+  const H = 280;
+
+  const DIFFICULTIES = {
+    easy: {
+      pathW: 38,
+      label: 'Easy'
+    },
+    medium: {
+      pathW: 24,
+      label: 'Medium'
+    },
+    hard: {
+      pathW: 15,
+      label: 'Surgeon Mode'
+    }
+  };
+
+  let diff = 'easy';
+  let state = 'idle';
+
+  let startTime = 0;
+  let elapsed = 0;
+  let mistakes = 0;
+  let progress = 0;
+
+  let timerID = null;
+
+  let ballX = 0;
+  let ballY = 0;
+  let ballR = 6;
+
+  let mazeSegments = [];
+
+  let canvas = null;
+  let ctx = null;
+
+  function qs(selector){
+    return widget.querySelector(selector);
+  }
+
+  function qsa(selector){
+    return widget.querySelectorAll(selector);
+  }
+
+  function showScreen(screenId){
+
+    qsa('.tsw-screen').forEach(screen => {
+      screen.classList.remove('tsw-active');
+    });
+
+    qs(screenId).classList.add('tsw-active');
+  }
+
+  qsa('.tsw-diff-btn').forEach(btn => {
+
+    btn.addEventListener('click', function(){
+
+      qsa('.tsw-diff-btn').forEach(b => {
+        b.classList.remove('tsw-selected');
+      });
+
+      btn.classList.add('tsw-selected');
+
+      diff = btn.dataset.diff;
+
+    });
+
+  });
+
+  function buildMaze(pathW){
+
+    const p = pathW;
+    const half = p / 2;
+    const margin = 16;
+
+    return [
+      {
+        x1: margin,
+        y1: H / 2 - half,
+        x2: margin + 60,
+        y2: H / 2 + half
+      },
+      {
+        x1: margin + 60,
+        y1: margin,
+        x2: margin + 60 + p,
+        y2: H / 2 + half
+      },
+      {
+        x1: margin + 60,
+        y1: margin,
+        x2: W / 2,
+        y2: margin + p
+      },
+      {
+        x1: W / 2 - half,
+        y1: margin,
+        x2: W / 2 + half,
+        y2: H - margin - p
+      },
+      {
+        x1: W / 2 - half,
+        y1: H - margin - p,
+        x2: W - margin - 60,
+        y2: H - margin
+      },
+      {
+        x1: W - margin - 60 - p,
+        y1: H / 2 - half,
+        x2: W - margin - 60,
+        y2: H - margin
+      },
+      {
+        x1: W - margin - 60 - p,
+        y1: H / 2 - half,
+        x2: W - margin,
+        y2: H / 2 + half
+      }
+    ];
+
+  }
+
+  function startGame(){
+
+    showScreen('#tsw-screen-game');
+
+    canvas = qs('#tsw-maze-canvas');
+    ctx = canvas.getContext('2d');
+
+    const pathW = DIFFICULTIES[diff].pathW;
+
+    mazeSegments = buildMaze(pathW);
+
+    mistakes = 0;
+    elapsed = 0;
+    progress = 0;
+
+    ballX = 24;
+    ballY = H / 2;
+
+    qs('#tsw-hud-time').textContent = '0.0s';
+    qs('#tsw-hud-progress').textContent = '0%';
+    qs('#tsw-hud-errors').textContent = '0';
+
+    qs('#tsw-progress-bar').style.width = '0%';
+
+    state = 'waiting';
+
+    drawMaze();
+
+    canvas.addEventListener('mousemove', onMove);
+    canvas.addEventListener('touchmove', onTouch, { passive:false });
+    canvas.addEventListener('touchstart', onTouch, { passive:false });
+
+  }
+
+  function drawMaze(){
+
+    ctx.clearRect(0, 0, W, H);
+
+    ctx.fillStyle = '#ffffff';
+    ctx.fillRect(0, 0, W, H);
+
+    const fillCols = [
+      '#E1F5EE',
+      '#9FE1CB',
+      '#5DCAA5',
+      '#1D9E75',
+      '#0F6E56',
+      '#085041',
+      '#04342C'
+    ];
+
+    const prog = Math.min(progress, 1);
+
+    mazeSegments.forEach((s, i) => {
+
+      const segProg = Math.min(
+        1,
+        Math.max(
+          0,
+          (prog * mazeSegments.length) - i
+        )
+      );
+
+      if(segProg > 0){
+
+        ctx.fillStyle =
+          fillCols[Math.min(i, fillCols.length - 1)] + '44';
+
+        ctx.fillRect(
+          s.x1 + 1,
+          s.y1 + 1,
+          (s.x2 - s.x1 - 2) * segProg,
+          s.y2 - s.y1 - 2
+        );
+
+      }
+
+      ctx.strokeStyle = '#888';
+      ctx.lineWidth = 1.5;
+
+      ctx.strokeRect(
+        s.x1,
+        s.y1,
+        s.x2 - s.x1,
+        s.y2 - s.y1
+      );
+
+    });
+
+    const lastSeg = mazeSegments[mazeSegments.length - 1];
+
+    ctx.fillStyle = '#1D9E75';
+    ctx.font = 'bold 11px sans-serif';
+
+    ctx.fillText(
+      'FINISH',
+      lastSeg.x2 - 48,
+      lastSeg.y1 + DIFFICULTIES[diff].pathW / 2 + 4
+    );
+
+    ctx.beginPath();
+
+    ctx.arc(
+      ballX,
+      ballY,
+      ballR,
+      0,
+      Math.PI * 2
+    );
+
+    ctx.fillStyle =
+      mistakes > 0
+      ? '#D85A30'
+      : '#185FA5';
+
+    ctx.fill();
+
+  }
+
+  function getCanvasPos(e){
+
+    const rect = canvas.getBoundingClientRect();
+
+    return {
+      x: (e.clientX - rect.left) * (W / rect.width),
+      y: (e.clientY - rect.top) * (H / rect.height)
+    };
+
+  }
+
+  function onMove(e){
+    handlePos(getCanvasPos(e));
+  }
+
+  function onTouch(e){
+
+    e.preventDefault();
+
+    handlePos(
+      getCanvasPos(e.touches[0])
+    );
+
+  }
+
+  function handlePos(pos){
+
+    const x = pos.x;
+    const y = pos.y;
+
+    if(state === 'waiting'){
+
+      const s = mazeSegments[0];
+
+      if(
+        x >= s.x1 &&
+        x <= s.x2 &&
+        y >= s.y1 &&
+        y <= s.y2
+      ){
+
+        state = 'playing';
+
+        startTime = Date.now();
+
+        timerID = setInterval(function(){
+
+          if(state !== 'playing'){
+            return;
+          }
+
+          elapsed =
+            (Date.now() - startTime) / 1000;
+
+          qs('#tsw-hud-time').textContent =
+            elapsed.toFixed(1) + 's';
+
+        }, 50);
+
+      }
+
+    }
+
+    if(state !== 'playing'){
+      return;
+    }
+
+    ballX = x;
+    ballY = y;
+
+    let inAny = false;
+    let bestProg = 0;
+
+    mazeSegments.forEach((s, i) => {
+
+      if(
+        x >= s.x1 &&
+        x <= s.x2 &&
+        y >= s.y1 &&
+        y <= s.y2
+      ){
+
+        inAny = true;
+
+        const wide =
+          (s.x2 - s.x1) >
+          (s.y2 - s.y1);
+
+        const segProg = wide
+          ? (x - s.x1) / (s.x2 - s.x1)
+          : (y - s.y1) / (s.y2 - s.y1);
+
+        const totalProg =
+          (i + segProg) / mazeSegments.length;
+
+        if(totalProg > bestProg){
+          bestProg = totalProg;
+        }
+
+      }
+
+    });
+
+    if(bestProg > progress){
+      progress = bestProg;
+    }
+
+    if(!inAny){
+
+      mistakes++;
+
+      qs('#tsw-hud-errors').textContent =
+        mistakes;
+
+      if(mistakes >= 3){
+
+        endGame(false);
+
+        return;
+
+      }
+
+    }
+
+    const prog = Math.round(progress * 100);
+
+    qs('#tsw-hud-progress').textContent =
+      prog + '%';
+
+    qs('#tsw-progress-bar').style.width =
+      prog + '%';
+
+    if(progress >= 0.98){
+
+      endGame(true);
+
+      return;
+
+    }
+
+    drawMaze();
+
+  }
+
+  function endGame(success){
+
+    state = 'done';
+
+    clearInterval(timerID);
+
+    canvas.removeEventListener('mousemove', onMove);
+    canvas.removeEventListener('touchmove', onTouch);
+    canvas.removeEventListener('touchstart', onTouch);
+
+    const t = elapsed.toFixed(1);
+
+    const score = success
+      ? Math.max(
+          0,
+          Math.round(
+            100 -
+            (mistakes * 20) -
+            (elapsed * 1.5)
+          )
+        )
+      : Math.round(progress * 40);
+
+    let grade;
+    let title;
+    let verdict;
+    let bg;
+    let tc;
+
+    if(!success && mistakes >= 3){
+
+      grade = 'X';
+
+      title = 'Too shaky!';
+
+      verdict =
+        'Your hands betrayed you — 3 mistakes and it’s over. The average person lasts 18 seconds on Medium. Think you can do better?';
+
+      bg = '#FCEBEB';
+      tc = '#A32D2D';
+
+    } else if(score >= 85){
+
+      grade = 'S';
+
+      title = 'Surgeon-level control';
+
+      verdict =
+        'Less than 5% of people score this high. Your hands are remarkably steady — a cardiothoracic surgeon would be impressed.';
+
+      bg = '#E1F5EE';
+      tc = '#085041';
+
+    } else if(score >= 65){
+
+      grade = 'A';
+
+      title = 'Very steady hands';
+
+      verdict =
+        'You’re in the top 20%. Clean, controlled movement — you’d pass a basic surgical dexterity test.';
+
+      bg = '#EAF3DE';
+      tc = '#27500A';
+
+    } else if(score >= 45){
+
+      grade = 'B';
+
+      title = 'Decent control';
+
+      verdict =
+        'Better than average. With practice you could push into the top tier. Retry and aim for zero mistakes.';
+
+      bg = '#E6F1FB';
+      tc = '#0C447C';
+
+    } else {
+
+      grade = 'C';
+
+      title = 'Needs work';
+
+      verdict =
+        'Your hands are trickier to control than you thought. Most people are surprised. Give it another go.';
+
+      bg = '#FAEEDA';
+      tc = '#633806';
+
+    }
+
+    qs('#tsw-grade-badge').textContent = grade;
+
+    qs('#tsw-grade-badge').style.background = bg;
+    qs('#tsw-grade-badge').style.color = tc;
+
+    qs('#tsw-result-title').textContent = title;
+
+    qs('#tsw-result-verdict').textContent = verdict;
+
+    qs('#tsw-result-time').textContent =
+      t + 's';
+
+    qs('#tsw-result-errors').textContent =
+      mistakes;
+
+    qs('#tsw-result-score').textContent =
+      score;
+
+    showScreen('#tsw-screen-result');
+
+  }
+
+  qs('#tsw-btn-start').addEventListener(
+    'click',
+    startGame
+  );
+
+  qs('#tsw-btn-retry').addEventListener(
+    'click',
+    function(){
+      showScreen('#tsw-screen-intro');
+    }
+  );
+
+  qs('#tsw-btn-share').addEventListener(
+    'click',
+    function(){
+
+      const title =
+        qs('#tsw-result-title').textContent;
+
+      const score =
+        qs('#tsw-result-score').textContent;
+
+      const time =
+        qs('#tsw-result-time').textContent;
+
+      const txt =
+        'Hand Steadiness Challenge\n' +
+        title + '\n' +
+        'Score: ' + score + '\n' +
+        'Time: ' + time + '\n' +
+        'Mistakes: ' + mistakes + '\n' +
+        'Difficulty: ' + DIFFICULTIES[diff].label;
+
+      if(navigator.clipboard){
+
+        navigator.clipboard.writeText(txt)
+          .then(function(){
+
+            qs('#tsw-btn-share').textContent =
+              'Copied!';
+
+            setTimeout(function(){
+
+              qs('#tsw-btn-share').textContent =
+                '↗ Copy Result';
+
+            }, 2000);
+
+          });
+
+      }
+
+    }
+  );
+
+})();
+</script>
+
+</div>
+```
